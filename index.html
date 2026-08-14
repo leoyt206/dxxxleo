@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dxxxleo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:radial-gradient(circle at center,#180006 0,#050000 45%,#000 100%);color:#eee;font-family:"Share Tech Mono",monospace;overflow-x:hidden}
+.noise,.scan,.vignette{position:fixed;inset:0;pointer-events:none;z-index:20}
+.noise{opacity:.045;background:repeating-radial-gradient(circle at 20% 30%,transparent 0,rgba(255,0,30,.15) 1px,transparent 2px)}
+.scan{opacity:.1;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(255,255,255,.08) 4px)}
+.vignette{background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.85) 100%)}
+.blood{position:fixed;top:0;width:3px;height:130px;background:linear-gradient(#77000f,#ff1638,transparent);opacity:.5;z-index:5}
+.b1{left:10%}.b2{right:18%;height:80px}
+.terminal{width:min(1100px,94%);margin:30px auto;background:rgba(3,3,3,.96);border:1px solid #4a0710;box-shadow:0 0 80px rgba(255,0,30,.15)}
+header{height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 15px;border-bottom:1px solid #320910;color:#777;font-size:11px}
+.dot{width:7px;height:7px;background:#ff1638;border-radius:50%;box-shadow:0 0 15px #ff1638}
+.hero{position:relative;min-height:500px;padding:90px 8%;overflow:hidden}
+.warning-text{color:#ff1638;font-size:12px;letter-spacing:4px;animation:flicker 2s infinite}
+h1{font-size:clamp(70px,13vw,150px);margin:25px 0 5px;letter-spacing:-8px;color:#eee;text-shadow:4px 0 #720014,-2px 0 #ff1638;animation:glitch 4s infinite}
+.subtitle{color:#777;letter-spacing:4px}.eye{position:absolute;right:10%;top:120px;width:150px;height:75px;border:2px solid rgba(255,0,30,.18);border-radius:50%;transform:rotate(-8deg);opacity:.6}
+.pupil{position:absolute;width:35px;height:35px;background:#ff002f;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px #ff002f,0 0 50px #ff002f;animation:eye 2s infinite}
+.subject{display:flex;align-items:center;gap:18px;margin-top:55px;width:420px;max-width:100%;padding:20px;border:1px solid #4b1018;background:rgba(0,0,0,.65)}
+.avatar{width:60px;height:60px;display:grid;place-items:center;border:1px solid #ff1638;color:#ff1638;font-size:25px;box-shadow:0 0 25px rgba(255,0,30,.15)}
+small{color:#666}.subject h2{margin:5px 0;font-size:20px}.online{color:#ff1638;font-size:11px}
+.warning-box{display:flex;gap:18px;padding:20px 8%;border-top:1px solid #400914;border-bottom:1px solid #400914;background:rgba(100,0,15,.08)}
+.skull{color:#ff1638;font-size:30px}.warning-box strong{color:#ff1638}.warning-box p{color:#777;font-size:11px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1px;background:#3b0a12}.panel{padding:25px;min-height:330px;background:#080808}
+.panel-title{color:#ff1638;letter-spacing:3px;font-size:12px;border-bottom:1px solid #321018;padding-bottom:13px}
+#log{margin-top:20px;color:#777;font-size:12px;line-height:2}.log-danger{color:#ff1638}
+.data{margin-top:15px}.data div{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px dashed #222;font-size:11px}
+.data span{color:#555}.data b{color:#aaa}.red{color:#ff1638!important}
+.allies{padding:30px 8%;border-top:1px solid #321018;border-bottom:1px solid #321018;background:#050505}
+.ally-list{margin-top:18px;color:#888;line-height:2}.final{text-align:center;padding:80px 20px;background:radial-gradient(circle,rgba(255,0,30,.08),transparent 60%)}
+#message{min-height:40px;font-size:25px;color:#eee;margin-bottom:25px}#countdown{color:#ff1638;letter-spacing:3px;font-size:11px;margin-bottom:18px}
+button{padding:14px 25px;background:transparent;border:1px solid #ff1638;color:#ff1638;font-family:inherit;letter-spacing:2px;cursor:pointer}
+button:hover{background:#ff1638;color:#000;box-shadow:0 0 30px #ff1638}
+footer{padding:15px;border-top:1px solid #251016;text-align:center;color:#444;font-size:9px}
+#modal{display:none;position:fixed;inset:0;z-index:50;place-items:center;background:rgba(0,0,0,.92)}
+#modal.show{display:grid}.modal-box{width:min(500px,90%);padding:45px;text-align:center;border:1px solid #ff1638;background:#050505;box-shadow:0 0 100px rgba(255,0,30,.3)}
+.lost{color:#ff1638;letter-spacing:5px}.modal-box h2{font-size:25px}.modal-box p{color:#777}.shake{animation:shake .08s infinite}
+@keyframes flicker{0%,20%,22%,60%,100%{opacity:1}21%,61%{opacity:.2}}
+@keyframes glitch{0%,90%,100%{transform:translate(0)}91%{transform:translate(5px,-2px)}92%{transform:translate(-5px,2px)}}
+@keyframes eye{0%,100%{transform:translate(-50%,-50%) scale(.8)}50%{transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes shake{0%{transform:translate(0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,3px)}100%{transform:translate(0)}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.eye{opacity:.2;right:4%}h1{font-size:70px}}
+</style>
+</head>
+<body>
+<div class="noise"></div><div class="scan"></div><div class="vignette"></div><div class="blood b1"></div><div class="blood b2"></div>
+<main class="terminal">
+<header><span class="dot"></span><span>▰ dxxxleo // RESTRICTED NETWORK</span><span id="clock">00:00:00</span></header>
+<section class="hero">
+<div class="warning-text">⚠ SIGNAL LOCKED // SUBJECT IDENTIFIED</div>
+<h1>dxxxleo</h1>
+<p class="subtitle">YOU WERE NOT SUPPOSED TO FIND THIS.</p>
+<div class="eye"><div class="pupil"></div></div>
+<div class="subject"><div class="avatar">?</div><div><small>DISCORD SUBJECT</small><h2>x.o Leoosdkkkkk</h2><span class="online">● SIGNAL DETECTED</span></div></div>
+</section>
+<section class="warning-box"><div class="skull">☠</div><div><strong>WARNING // FICTIONAL ARCHIVE</strong><p>This is a fictional horror interface. No real IP addresses, locations, Discord information, cameras, or private data are collected.</p></div></section>
+<section class="grid">
+<div class="panel"><div class="panel-title">TRACE LOG</div><div id="log"></div></div>
+<div class="panel"><div class="panel-title">SUBJECT PROFILE</div><div class="data">
+<div><span>IDENTITY</span><b>x.o Leoosdkkkkk</b></div>
+<div><span>SV</span><b>dxx.2101</b></div>
+<div><span>STATUS</span><b class="red">WATCHING</b></div>
+<div><span>LOCATION</span><b>████████</b></div>
+<div><span>IP</span><b>███.███.███.███</b></div>
+<div><span>THREAT</span><b class="red">UNKNOWN</b></div>
+</div></div>
+</section>
+<section class="allies"><div class="panel-title">ALLIED SIGNALS</div><div class="ally-list">trapcute • trapnet • trapshit • T2S • threat2Society • X.o FORTUNE • Brutal tribe</div></section>
+<section class="final"><div id="message"></div><div id="countdown">SIGNAL DECAY: 13</div><button id="panic">DO NOT CLICK</button></section>
+<footer>dxxxleo // SV dxx.2101 // NIGHTTRACE</footer>
+</main>
+<div id="modal"><div class="modal-box"><div class="lost">SIGNAL LOST</div><h2>YOU SHOULDN'T HAVE CLICKED.</h2><p>x.o Leoosdkkkkk...<br>something noticed you.</p><button id="close">I UNDERSTAND</button></div></div>
+<script>
+const clock=document.getElementById("clock");
+function updateClock(){clock.textContent=new Date().toLocaleTimeString([],{hour12:false})}
+setInterval(updateClock,1000);updateClock();
+const lines=["[00:00:01] connecting to restricted node...","[00:00:02] searching public signal...","[00:00:03] discord identifier detected.","[00:00:04] subject: x.o Leoosdkkkkk","[00:00:05] SV: dxx.2101","[00:00:06] trace initialized...","[00:00:07] observer detected.","[00:00:08] ███████████████████","[00:00:09] STOP LOOKING."];
+const log=document.getElementById("log");
+lines.forEach((line,index)=>setTimeout(()=>{const item=document.createElement("div");item.textContent=line;if(line.includes("STOP")||line.includes("detected"))item.className="log-danger";log.appendChild(item)},index*600));
+const message=document.getElementById("message"),text="I KNOW YOU ARE STILL HERE.";let pos=0;
+function typeMessage(){if(pos<text.length){message.textContent+=text[pos++];setTimeout(typeMessage,75)}}setTimeout(typeMessage,5500);
+let countdown=13;const cd=document.getElementById("countdown");
+setInterval(()=>{countdown--;if(countdown<0)countdown=13;cd.textContent="SIGNAL DECAY: "+String(countdown).padStart(2,"0")},1000);
+const modal=document.getElementById("modal");
+document.getElementById("panic").onclick=()=>{modal.classList.add("show");document.body.classList.add("shake");setTimeout(()=>document.body.classList.remove("shake"),700)};
+document.getElementById("close").onclick=()=>modal.classList.remove("show");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")modal.classList.remove("show")});
+</script>
+</body>
+</html>
